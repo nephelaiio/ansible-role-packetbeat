@@ -1,0 +1,19 @@
+---
+- name: restart packetbeat
+  service:
+    name: "{{ packetbeat_service_name }}"
+    state: restarted
+
+- name: install packetbeat template
+  command: |
+    packetbeat setup --template -E {{ packetbeat_cmd_enable }} -E {{ packetbeat_cmd_hosts }}
+  vars:
+    packetbeat_els_hosts: "{{ packetbeat_conf.output.elasticsearch.hosts }}"
+    packetbeat_cmd_enable: "output.elasticsearch.enabled=true"
+    packetbeat_cmd_hosts: "output.elasticsearch.hosts={{ packetbeat_els_hosts | to_json }}"
+  when:
+    - "packetbeat_conf is defined"
+    - "'output' in packetbeat_conf"
+    - "'elasticsearch' in packetbeat_conf.output"
+    - "'hosts' in packetbeat_conf.output.elasticsearch"
+  ignore_errors: yes

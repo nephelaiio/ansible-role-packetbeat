@@ -1,0 +1,59 @@
+---
+- name: include variable overrides
+  include_vars: "{{ item }}"
+  with_first_found:
+    - files:
+        - "vars/{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml"
+        - "vars/{{ ansible_distribution }}.yml"
+        - "vars/{{ ansible_os_family }}.yml"
+        - "vars/main.yml"
+  tags:
+    - packetbeat
+
+- name: uninstall packetbeat elastic packages
+  package:
+    name: "{{ packetbeat_package_names_els }}"
+    state: absent
+  when:
+    - (not packetbeat_packages is defined) or (packetbeat_package_names_els not in packetbeat_packages)
+    - packetbeat_oss | bool
+
+- name: install packetbeat oss packages
+  package:
+    name: "{{ packetbeat_packages | default(packetbeat_package_names_oss) }}"
+    state: "{{ packetbeat_package_state }}"
+  when: packetbeat_oss | bool
+  notify: install packetbeat template
+
+- name: uninstall packetbeat oss packages
+  package:
+    name: "{{ packetbeat_package_names_oss }}"
+    state: absent
+  when:
+    - (not packetbeat_packages is defined) or (packetbeat_package_names_oss not in packetbeat_packages)
+    - not (packetbeat_oss | bool)
+
+- name: install packetbeat elastic packages
+  package:
+    name: "{{ packetbeat_packages | default(packetbeat_package_names_els) }}"
+    state: "{{ packetbeat_package_state }}"
+  when: not (packetbeat_oss | bool)
+  notify: install packetbeat template
+
+- name: configure packetbeat
+  copy:
+    content: |
+      # Ansible managed
+
+      {{ packetbeat_conf | to_nice_yaml(indent=2) }}
+    dest: "{{ packetbeat_conf_path }}"
+  notify: restart packetbeat
+  when:
+    - packetbeat_conf is defined
+    - packetbeat_conf_manage | bool
+
+- name: manage packetbeat services
+  service:
+    name: "{{ packetbeat_service_name }}"
+    state: "{{ packetbeat_service_status }}"
+    enabled: "{{ packetbeat_service_enabled }}"
