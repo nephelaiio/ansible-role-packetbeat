@@ -6,3 +6,113 @@ packetbeat_conf_path: /etc/packetbeat/packetbeat.yml
 packetbeat_service_name: packetbeat
 packetbeat_service_status: started
 packetbeat_service_enabled: yes
+
+packetbeat_conf_protocols:
+  protocols:
+    - type: dhcpv4
+      ports: [67, 68]
+
+    - type: dns
+      ports: [53]
+
+    - type: ntp
+      ports: [123]
+
+    - type: http
+      ports: [80, 8080, 8081, 5000, 8002, 9060]
+
+    - type: memcache
+      ports: [11211]
+
+    - type: mysql
+      ports: [3306,3307]
+
+    - type: pgsql
+      ports: [5432]
+
+    - type: redis
+      ports: [6379]
+
+    - type: thrift
+      ports: [9090]
+
+    - type: mongodb
+      ports: [27017]
+
+    - type: cassandra
+      ports: [9042]
+
+    - type: tls
+      ports: [443, 993, 995, 5223, 8443, 8883, 9243]
+
+    - type: akka
+      ports: "{{ range(10100, 10800, 1) | list }}"
+
+    - type: zookeeper
+      ports: [2181, 2888, 3888]
+
+    - type: kafka
+      ports: [9092]
+
+    - type: smtp
+      ports: [25,2525,465,587]
+
+    - type: pop
+      ports: [110,995]
+
+    - type: imap
+      ports: [143,993]
+
+    - type: rdp
+      ports: [3389]
+
+    - type: ldap
+      ports: [389,636]
+
+    - type: ssh
+      ports: [22]
+
+    - type: xmpp
+      ports: [5222]
+
+    - type: mssql
+      ports: [1433]
+
+    - type: snmp
+      ports: [161]
+
+    - type: sip
+      ports: [5060]
+
+    - type: eset
+      ports: [2222, 3128]
+
+packetbeat_conf_extra: {}
+
+packetbeat_conf_output:
+  elasticsearch:
+    enabled: "{{ packetbeat_conf_elasticsearch_enabled | default(true) }}"
+    hosts: "{{ packetbeat_conf_elasticsearch_hosts | default('localhost:9200') }}"
+  logstash:
+    enabled: "{{ packetbeat_conf_logstash_enabled | default(false) }}"
+    hosts: "{{ packetbeat_conf_logstash_hosts | default('localhost:5044') }}"
+
+packetbeat_conf_setup:
+  dashboards:
+    enabled: "{{ packetbeat_conf_dashboards_enabled | default(false) }}"
+    beat: packetbeat
+    always_kibana: "{{ packetbeat_conf_dashboards_kibana | default(true) }}"
+  template:
+    enabled: "{{ packetbeat_conf_template_enabled | default(true) }}"
+  kibana:
+    host: "{{ packetbeat_conf_kibana_host | default('localhost:80') }}"
+
+packetbeat_conf_base:
+  packetbeat:
+    interfaces:
+      devices: any
+    protocols: "{{ packetbeat_conf_protocols }}"
+  output: "{{ packetbeat_conf_output }}"
+  setup: "{{ packetbeat_conf_setup }}"
+
+packetbeat_conf: "{{ packetbeat_conf_base | combine(packetbeat_conf_extra) }}"
