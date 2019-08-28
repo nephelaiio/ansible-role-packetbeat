@@ -25,7 +25,7 @@ packetbeat_conf_protocols:
       ports: [11211]
 
     - type: mysql
-      ports: [3306,3307]
+      ports: [3306, 3307]
 
     - type: pgsql
       ports: [5432]
@@ -55,19 +55,19 @@ packetbeat_conf_protocols:
       ports: [9092]
 
     - type: smtp
-      ports: [25,2525,465,587]
+      ports: [25, 2525, 465, 587]
 
     - type: pop
-      ports: [110,995]
+      ports: [110, 995]
 
     - type: imap
-      ports: [143,993]
+      ports: [143, 993]
 
     - type: rdp
       ports: [3389]
 
     - type: ldap
-      ports: [389,636]
+      ports: [389, 636]
 
     - type: ssh
       ports: [22]
