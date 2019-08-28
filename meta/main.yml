@@ -22,5 +22,5 @@ galaxy_info:
 dependencies:
   - name: nephelaiio.elastic_repo
     vars:
-      elastic_repo_oss: "{{ packetbeat_oss }}"
+      elastic_repo_oss: no
     version: 1.0.0

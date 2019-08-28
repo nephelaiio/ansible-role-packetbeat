@@ -20,7 +20,6 @@ Please review the [dependency configuration](/meta/main.yml) for more details
 ```
 - hosts: servers
   vars:
-    packetbeat_oss: no
     packetbeat_package_state: latest
     packetbeat_conf_manage: yes
     packetbeat_conf:

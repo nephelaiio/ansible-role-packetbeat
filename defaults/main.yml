@@ -1,10 +1,8 @@
 ---
-packetbeat_package_names_oss: packetbeat-elastic-oss
 packetbeat_package_names_els: packetbeat-elastic
-packetbeat_oss: yes
 packetbeat_package_state: present
 packetbeat_conf_manage: yes
 packetbeat_conf_path: /etc/packetbeat/packetbeat.yml
-packetbeat_service_name: packetbeat-elastic
+packetbeat_service_name: packetbeat
 packetbeat_service_status: started
 packetbeat_service_enabled: yes

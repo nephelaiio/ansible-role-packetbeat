@@ -10,34 +10,10 @@
   tags:
     - packetbeat
 
-- name: uninstall packetbeat elastic packages
-  package:
-    name: "{{ packetbeat_package_names_els }}"
-    state: absent
-  when:
-    - (not packetbeat_packages is defined) or (packetbeat_package_names_els not in packetbeat_packages)
-    - packetbeat_oss | bool
-
-- name: install packetbeat oss packages
-  package:
-    name: "{{ packetbeat_packages | default(packetbeat_package_names_oss) }}"
-    state: "{{ packetbeat_package_state }}"
-  when: packetbeat_oss | bool
-  notify: install packetbeat template
-
-- name: uninstall packetbeat oss packages
-  package:
-    name: "{{ packetbeat_package_names_oss }}"
-    state: absent
-  when:
-    - (not packetbeat_packages is defined) or (packetbeat_package_names_oss not in packetbeat_packages)
-    - not (packetbeat_oss | bool)
-
 - name: install packetbeat elastic packages
   package:
     name: "{{ packetbeat_packages | default(packetbeat_package_names_els) }}"
     state: "{{ packetbeat_package_state }}"
-  when: not (packetbeat_oss | bool)
   notify: install packetbeat template
 
 - name: configure packetbeat
