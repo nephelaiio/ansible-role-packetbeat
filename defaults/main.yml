@@ -27,6 +27,12 @@ packetbeat_conf_protocols:
   - type: tls
     ports: [443]
 
+  - type: pgsql
+    ports: [5432]
+
+  - type: mysql
+    ports: [3306, 3307]
+
 packetbeat_conf_extra: {}
 
 packetbeat_conf_output:
