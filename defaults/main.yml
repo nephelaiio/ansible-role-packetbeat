@@ -16,34 +16,34 @@ packetbeat_conf_protocols:
     enabled: true
 
   - type: dhcpv4
-    ports: [67, 68]
+    ports: "{{ packetbeat_conf_protocols_dhcpv4_ports | default([67, 68]) }}"
 
   - type: dns
-    ports: [53]
+    ports: "{{ packetbeat_conf_protocols_dns_ports | default([53]) }}"
 
   - type: http
-    ports: [80]
+    ports: "{{ packetbeat_conf_protocols_http_ports | default([80]) }}"
 
   - type: tls
-    ports: [443]
+    ports: "{{ packetbeat_conf_protocols_tls_ports | default([443]) }}"
 
   - type: pgsql
-    ports: [5432]
+    ports: "{{ packetbeat_conf_protocols_pgsql_ports | default([5432]) }}"
 
   - type: mysql
-    ports: [3306]
+    ports: "{{ packetbeat_conf_protocols_mysql_ports | default([3306]) }}"
 
   - type: cassandra
-    ports: [9042]
+    ports: "{{ packetbeat_conf_protocols_cassandra_ports | default([9042]) }}"
 
   - type: amqp
-    ports: [5672]
+    ports: "{{ packetbeat_conf_protocols_amqp_ports | default([5072]) }}"
 
   - type: memcache
-    ports: [11211]
+    ports: "{{ packetbeat_conf_protocols_memcache_ports | default([11211]) }}"
 
   - type: thrift
-    ports: [9090]
+    ports: "{{ packetbeat_conf_protocols_thrift_ports | default([9090]) }}"
 
 packetbeat_conf_extra: {}
 
