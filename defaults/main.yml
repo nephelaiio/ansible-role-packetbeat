@@ -31,7 +31,19 @@ packetbeat_conf_protocols:
     ports: [5432]
 
   - type: mysql
-    ports: [3306, 3307]
+    ports: [3306]
+
+  - type: cassandra
+    ports: [9042]
+
+  - type: amqp
+    ports: [5672]
+
+  - type: memcache
+    ports: [11211]
+
+  - type: thrift
+    ports: [9090]
 
 packetbeat_conf_extra: {}
 
