@@ -19,7 +19,6 @@
   package:
     name: "{{ packetbeat_packages | default(packetbeat_package_names_els) }}"
     state: "{{ packetbeat_package_state }}"
-  notify: install packetbeat template
 
 - name: configure packetbeat
   copy:
