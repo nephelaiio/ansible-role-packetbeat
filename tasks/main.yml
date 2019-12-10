@@ -10,6 +10,11 @@
   tags:
     - packetbeat
 
+- name: configure elastic repo
+  include_role:
+    name: nephelaiio.elastic_repo
+  when: packetbeat_repo_manage | bool
+
 - name: install packetbeat elastic packages
   package:
     name: "{{ packetbeat_packages | default(packetbeat_package_names_els) }}"
