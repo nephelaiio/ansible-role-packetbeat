@@ -69,6 +69,7 @@ packetbeat_conf_base:
   packetbeat:
     interfaces:
       devices: any
+      type: af_packet
     protocols: "{{ packetbeat_conf_protocols }}"
     flows: "{{ packetbeat_conf_flows }}"
   output: "{{ packetbeat_conf_output }}"
