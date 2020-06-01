@@ -20,6 +20,8 @@ galaxy_info:
     - packetbeat
 
 dependencies:
+  - name: nephelaiio.plugins
+    version: 1.0.23
   - name: nephelaiio.elastic_repo
     version: 2.0.0
     when: false
