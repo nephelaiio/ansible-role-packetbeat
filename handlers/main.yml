@@ -3,4 +3,3 @@
   service:
     name: "{{ packetbeat_service_name }}"
     state: restarted
-  when: packetbeat_service_status != 'stopped'
