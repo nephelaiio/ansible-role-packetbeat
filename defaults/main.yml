@@ -7,6 +7,7 @@ packetbeat_service_name: packetbeat
 packetbeat_service_status: started
 packetbeat_service_enabled: yes
 packetbeat_repo_manage: yes
+packetbeat_package_hold: no
 
 packetbeat_conf_flows:
   timeout: 60s
