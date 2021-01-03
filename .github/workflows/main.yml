@@ -34,8 +34,9 @@ jobs:
 
       - name: Lint code.
         run: |
+          set -e
           yamllint .
-          ansible-lint
+          ansible-lint .
 
   molecule:
     name: Molecule
@@ -60,7 +61,7 @@ jobs:
           python-version: '3.x'
 
       - name: Install test dependencies.
-        run: pip3 install ansible molecule[docker] docker
+        run: pip3 install ansible molecule[docker] docker pytest pytest-testinfra
 
       - name: Run Molecule tests.
         run: molecule test
