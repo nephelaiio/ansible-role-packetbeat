@@ -1,6 +1,6 @@
 # nephelaiio.packetbeat
 
-[![Build Status](https://github.com/nephelaiio/ansible-role-packetbeat/workflows/.github/workflows/main.yml/badge.svg)](https://travis-ci.org/nephelaiio/ansible-role-packetbeat)
+![Build Status](https://github.com/nephelaiio/ansible-role-packebeat/workflows/CI/badge.svg)
 [![Ansible Galaxy](http://img.shields.io/badge/ansible--galaxy-nephelaiio.packetbeat-blue.svg)](https://galaxy.ansible.com/nephelaiio/packetbeat/)
 
 An [ansible role](https://galaxy.ansible.com/nephelaiio/packetbeat) to install and configure packetbeat
