@@ -71,4 +71,4 @@
         state: "{{ packetbeat_service_status }}"
         enabled: "{{ packetbeat_service_enabled }}"
 
-  when: packetbeat_package_state == 'present'
+  when: packetbeat_package_state in ['present', 'latest']
