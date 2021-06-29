@@ -3,3 +3,4 @@
   service:
     name: "{{ packetbeat_service_name }}"
     state: restarted
+  when: packetbeat_package_state in ['present', 'latest']
