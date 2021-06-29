@@ -35,36 +35,40 @@
 
 - block:
 
-    - name: enable apt package hold
-      command: "apt-mark hold {{ item }}"
-      loop: "{{ [packetbeat_packages] | flatten }}"
+    - block:
+
+        - name: enable apt package hold
+          command: "apt-mark hold {{ item }}"
+          loop: "{{ [packetbeat_packages] | flatten }}"
+          when:
+            - ansible_os_family == 'Debian'
+
+        - name: enable yum package lock
+          command: "yum versionlock add {{ item }}"
+          loop: "{{ [packetbeat_packages] | flatten }}"
+          when:
+            - ansible_os_family == 'RedHat'
+          tags:
+            - skip_ansible_lint
+
+      when: packetbeat_package_hold | bool
+
+    - name: configure packetbeat
+      copy:
+        content: |
+          # Ansible managed
+
+          {{ packetbeat_conf | to_nice_yaml(indent=2) }}
+        dest: "{{ packetbeat_conf_path }}"
+      notify: restart packetbeat
       when:
-        - ansible_os_family == 'Debian'
+        - packetbeat_conf is defined
+        - packetbeat_conf_manage | bool
 
-    - name: enable yum package lock
-      command: "yum versionlock add {{ item }}"
-      loop: "{{ [packetbeat_packages] | flatten }}"
-      when:
-        - ansible_os_family == 'RedHat'
-      tags:
-        - skip_ansible_lint
+    - name: manage packetbeat services
+      service:
+        name: "{{ packetbeat_service_name }}"
+        state: "{{ packetbeat_service_status }}"
+        enabled: "{{ packetbeat_service_enabled }}"
 
-  when: packetbeat_package_hold | bool
-
-- name: configure packetbeat
-  copy:
-    content: |
-      # Ansible managed
-
-      {{ packetbeat_conf | to_nice_yaml(indent=2) }}
-    dest: "{{ packetbeat_conf_path }}"
-  notify: restart packetbeat
-  when:
-    - packetbeat_conf is defined
-    - packetbeat_conf_manage | bool
-
-- name: manage packetbeat services
-  service:
-    name: "{{ packetbeat_service_name }}"
-    state: "{{ packetbeat_service_status }}"
-    enabled: "{{ packetbeat_service_enabled }}"
+  when: packetbeat_package_state in ['present', 'latest']
