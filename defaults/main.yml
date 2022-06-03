@@ -1,5 +1,5 @@
 ---
-packetbeat_package_names_els: packetbeat
+packetbeat_package_names: packetbeat
 packetbeat_package_state: present
 packetbeat_conf_manage: yes
 packetbeat_conf_path: /etc/packetbeat/packetbeat.yml
