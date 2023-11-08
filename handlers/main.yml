@@ -1,6 +1,7 @@
 ---
-- name: restart packetbeat
-  service:
+- name: Restart packetbeat
+  ansible.builtin.service:
     name: "{{ packetbeat_service_name }}"
     state: restarted
+  listen: packetbeat_restart
   when: packetbeat_package_state in ['present', 'latest']

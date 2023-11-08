@@ -1,86 +1,81 @@
 ---
-- name: configure elastic repo
-  include_role:
+- name: Configure elastic repository
+  ansible.builtin.include_role:
     name: nephelaiio.elastic_repo
-  when: packetbeat_repo_manage | bool
+  when: packetbeat_repo_manage
 
-- name: inspect packages
-  package_facts:
+- name: Collect package facts
+  ansible.builtin.package_facts:
     manager: auto
 
-- block:
+- name: Disable package locks
+  when: packetbeat_package_hold
+  block:
 
-    - block:
+    - name: Disable yum package lock
+      when: ansible_os_family == 'RedHat'
+      block:
 
-        - name: install yum version lock support
-          package:
+        - name: Install yum version lock support
+          ansible.builtin.package:
             name: yum-plugin-versionlock
 
-        - name: disable yum package lock
+        - name: Disable yum package lock
           community.general.yum_versionlock:
             name: "{{ item }}"
             state: absent
           loop: "{{ [packetbeat_package_names] | flatten }}"
+          changed_when: false
           when: item in packages
-          tags:
-            - skip_ansible_lint
 
-      when: (ansible_os_family | lower) == 'redhat'
-
-    - name: disable apt package lock
-      dpkg_selections:
+    - name: Disable apt package lock
+      ansible.builtin.dpkg_selections:
         name: "{{ item }}"
         selection: install
       loop: "{{ [packetbeat_package_names] | flatten }}"
+      changed_when: false
       when:
-        - (ansible_os_family | lower) == 'debian'
         - item in packages
+        - ansible_os_family == 'Debian'
 
-  when: packetbeat_package_hold | bool
-
-- name: install packetbeat elastic packages
-  package:
+- name: Install packetbeat packages
+  ansible.builtin.package:
     name: "{{ packetbeat_package_names }}"
     state: "{{ packetbeat_package_state }}"
 
-- block:
+- name: Configure packetbeat
+  when: packetbeat_package_state in ['present', 'latest']
+  block:
 
-    - block:
+    - name: Enable package locks
+      when: packetbeat_package_hold
+      block:
 
-        - name: enable apt package hold
-          dpkg_selections:
+        - name: Enable apt package hold
+          ansible.builtin.dpkg_selections:
             name: "{{ item }}"
             selection: hold
           loop: "{{ [packetbeat_package_names] | flatten }}"
-          when: (ansible_os_family | lower) == 'debian'
+          changed_when: false
+          when: ansible_os_family == 'Debian'
 
-        - name: enable yum package lock
+        - name: Enable yum package lock
           community.general.yum_versionlock:
             name: "{{ item }}"
             state: present
           loop: "{{ [packetbeat_package_names] | flatten }}"
-          when: (ansible_os_family | lower) == 'redhat'
-          tags:
-            - skip_ansible_lint
+          changed_when: false
+          when: ansible_os_family == 'RedHat'
 
-      when: packetbeat_package_hold | bool
-
-    - name: configure packetbeat
-      copy:
+    - name: Manage packetbeat main configuration file
+      ansible.builtin.copy:
         content: |
           # Ansible managed
 
           {{ packetbeat_conf | to_nice_yaml(indent=2) }}
         dest: "{{ packetbeat_conf_path }}"
-      notify: restart packetbeat
-      when:
-        - packetbeat_conf is defined
-        - packetbeat_conf_manage | bool
+      notify: packetbeat_restart
+      when: packetbeat_conf_manage
 
-    - name: manage packetbeat services
-      service:
-        name: "{{ packetbeat_service_name }}"
-        state: "{{ packetbeat_service_status }}"
-        enabled: "{{ packetbeat_service_enabled }}"
-
-  when: packetbeat_package_state in ['present', 'latest']
+- name: Include service tasks
+  ansible.builtin.include_tasks: service.yml

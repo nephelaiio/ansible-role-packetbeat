@@ -5,21 +5,18 @@ galaxy_info:
   author: nephelaiio
   description: An Ansible role to install and configure packetbeat
   license: MIT
-  min_ansible_version: 2.7
+  min_ansible_version: '2.7'
   platforms:
     - name: EL
       versions:
-        - 7
+        - all
     - name: Ubuntu
       versions:
-        - focal
-        - bionic
-        - xenial
+        - all
     - name: Debian
       versions:
-        - buster
-  galaxy_tags:
-    - packetbeat
+        - all
+  galaxy_tags: ['packetbeat']
 
 dependencies:
   - name: nephelaiio.plugins
