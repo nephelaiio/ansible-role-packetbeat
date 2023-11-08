@@ -1,0 +1,6 @@
+---
+- name: Manage packetbeat services
+  ansible.builtin.service:
+    name: "{{ packetbeat_service_name }}"
+    state: "{{ packetbeat_service_status }}"
+    enabled: "{{ packetbeat_service_enabled }}"
