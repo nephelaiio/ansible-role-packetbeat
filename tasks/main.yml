@@ -78,5 +78,5 @@
       notify: packetbeat_restart
       when: packetbeat_conf_manage
 
-- name: Include service tasks
-  ansible.builtin.include_tasks: service.yml
+    - name: Include service tasks
+      ansible.builtin.include_tasks: service.yml
