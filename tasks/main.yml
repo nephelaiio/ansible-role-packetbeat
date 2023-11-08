@@ -74,6 +74,7 @@
 
           {{ packetbeat_conf | to_nice_yaml(indent=2) }}
         dest: "{{ packetbeat_conf_path }}"
+        mode: 0644
       notify: packetbeat_restart
       when: packetbeat_conf_manage
 
