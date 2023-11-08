@@ -1,6 +1,6 @@
 # nephelaiio.packetbeat
 
-[![Build Status](https://github.com/nephelaiio/ansible-role-packetbeat/workflows/CI/badge.svg)](https://github.com/nephelaiio/ansible-role-packetbeat/actions)
+[![Build Status](https://github.com/nephelaiio/ansible-role-packetbeat/workflows/molecule.yml/badge.svg)](https://github.com/nephelaiio/ansible-role-packetbeat/actions)
 [![Ansible Galaxy](http://img.shields.io/badge/ansible--galaxy-nephelaiio.packetbeat-blue.svg)](https://galaxy.ansible.com/nephelaiio/packetbeat/)
 
 An [ansible role](https://galaxy.ansible.com/nephelaiio/packetbeat) to install and configure packetbeat
@@ -53,13 +53,13 @@ Please review the [dependency configuration](/meta/main.yml) for more details
 Please make sure your environment has [docker](https://www.docker.com) installed in order to run role validation tests. Additional python dependencies are listed in the [requirements file](https://github.com/nephelaiio/ansible-role-requirements/blob/master/requirements.txt)
 
 Role is tested against the following distributions (docker images):
+  * Ubuntu Jammy
   * Ubuntu Focal
-  * Ubuntu Bionic
-  * Ubuntu Xenial
-  * CentOS 7
-  * Debian Stretch
+  * Debian Bookworm
+  * Ubuntu Bullseye
+  * Rocky Linux 9
 
-You can test the role directly from sources using command ` molecule test `
+You can test the role directly from sources using command ` make test `
 
 ## License
 
