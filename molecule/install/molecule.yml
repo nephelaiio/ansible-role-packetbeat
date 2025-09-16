@@ -4,7 +4,7 @@ dependency:
 driver:
   name: docker
 platforms:
-  - name: packetbeat-7x
+  - name: instance
     image: "geerlingguy/docker-${MOLECULE_DOCKER_IMAGE:-ubuntu2004}-ansible:latest"
     command: ${MOLECULE_DOCKER_COMMAND:-""}
     cgroupns_mode: host
@@ -28,7 +28,7 @@ provisioner:
   inventory:
     group_vars:
       all:
-        elasticsearch_repo_major_version: 7
+        elasticsearch_repo_major_version: "{{ lookup('env','MOLECULE_ELASTICSEARCH_MAJOR_VERSION') }}"
         packetbeat_package_hold: true
         packetbeat_conf_output:
           file:
