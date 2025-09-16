@@ -51,12 +51,12 @@ packetbeat_conf_extra: {}
 
 packetbeat_conf_elasticsearch_enabled: true
 packetbeat_conf_elasticsearch_port: 9200
-packetbeat_conf_elasticsearch_hosts: ['localhost']
+packetbeat_conf_elasticsearch_hosts: ["localhost"]
 packetbeat_conf_elasticsearch_loadbalance: true
 
 packetbeat_conf_logstash_enabled: false
 packetbeat_conf_logstash_port: 5044
-packetbeat_conf_logstash_hosts: ['localhost']
+packetbeat_conf_logstash_hosts: ["localhost"]
 packetbeat_conf_logstash_loadbalance: true
 
 packetbeat_conf_output_elasticsearch:
